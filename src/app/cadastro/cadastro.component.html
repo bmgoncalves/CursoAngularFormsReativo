@@ -4,19 +4,19 @@
   <form class="principal__formulario" id="formulario" #f="ngForm" (ngSubmit)="cadastrar(f)">
     <h3 class="principal__subtitulo">Dados pessoais</h3>
     <div class="formulario__campo">
-      <label class="campo__etiqueta" for="nome">Nome Completo</label>
+      <label class="campo__etiqueta" for="nascimento">nascimento Completo</label>
       <input 
-        name="nome" 
-        id="nome" 
+        name="nascimento" 
+        id="nascimento" 
         class="campo__escrita" 
         ngModel 
         required 
         minlength="2"
-        #nome="ngModel"
+        #nascimento="ngModel"
       /> 
-      <div *ngIf="(nome?.invalid && nome?.touched) || nome?.dirty">
-        <app-mensagem *ngIf="nome?.errors?.['required']" mensagem="O Campo nome deve ser preenchido!"></app-mensagem>
-        <app-mensagem *ngIf="nome?.errors?.['minlength']" mensagem="Campo deve ter no minimo 2 caracteres!"></app-mensagem>
+      <div *ngIf="(nascimento?.invalid && nascimento?.touched) || nascimento?.dirty">
+        <app-mensagem *ngIf="nascimento?.errors?.['required']" mensagem="O Campo nascimento deve ser preenchido!"></app-mensagem>
+        <app-mensagem *ngIf="nascimento?.errors?.['minlength']" mensagem="Campo deve ter no minimo 2 caracteres!"></app-mensagem>
       </div>
     </div>
     <div class="formulario__dupla">
@@ -27,10 +27,17 @@
         id="nascimento" 
         type="date" 
         class="campo__escrita"
+        required
+        maiorIdadeValidator
+        #nascimento="ngModel"
         ngModel        
         />
+        <div *ngIf="(nascimento?.invalid && nascimento?.touched) || nascimento?.dirty">
+          <app-mensagem *ngIf="nascimento?.errors?.['required']" mensagem="A data de nascimento deve ser preenchida!"></app-mensagem>
+          <app-mensagem *ngIf="nascimento?.errors?.['maiorIdadeValidator']" mensagem="O usuário deve ter mais de 18 anos!"></app-mensagem>
+        </div>
       </div>
-
+        
       <div class="formulario__campo">
         <label class="campo__etiqueta" for="telefone">Contato</label>
         <input 
@@ -51,29 +58,41 @@
       </div>
     </div>
     <div class="formulario__campo">
-      <label class="campo__etiqueta" for="email">E-mail</label>
+      <label class="campo__etiqueta" for="cep">E-mail</label>
       <input 
-      name="email" 
-      id="email" 
-      type="email" 
+      name="cep" 
+      id="cep" 
+      type="cep" 
       class="campo__escrita"
-      ngModel required email pattern="^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$"
-      #email="ngModel"
+      ngModel required cep pattern="^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$"
+      #cep="ngModel"
       />
 
-      <div *ngIf="(email?.invalid && email?.touched) || email?.dirty">
-        <app-mensagem *ngIf="email?.errors?.['required']" mensagem="O Campo e-mail deve ser preenchido!"></app-mensagem>
-        <app-mensagem *ngIf="email?.errors?.['pattern']" mensagem="Campo deve seguir este padrão: examplo@dominio.com.br"></app-mensagem>
+      <div *ngIf="(cep?.invalid && cep?.touched) || cep?.dirty">
+        <app-mensagem *ngIf="cep?.errors?.['required']" mensagem="O Campo e-mail deve ser preenchido!"></app-mensagem>
+        <app-mensagem *ngIf="cep?.errors?.['pattern']" mensagem="Campo deve seguir este padrão: examplo@dominio.com.br"></app-mensagem>
       </div>
     </div>
 
-
     <h3 class="principal__subtitulo">Endereço</h3>
-
     <div class="formulario__campo">
       <label class="campo__etiqueta" for="cep">CEP</label>
-      <input name="cep" id="cep" class="campo__escrita" />
-      <div id="erro"></div>
+      <input 
+      name="cep" 
+      id="cep" 
+      class="campo__escrita" 
+      ngModel 
+      required
+      #cep="ngModel"
+      
+      minlength="8"
+      maxlength="9"
+      (blur)="consultaCep($event)"
+      />
+      <div *ngIf="(cep?.invalid && cep?.touched) || cep?.dirty" id="erro">
+        <app-mensagem *ngIf="cep?.errors?.['required']" mensagem="O Campo CEP é obrigatório!"></app-mensagem>
+        <!-- <app-mensagem *ngIf="cep?.errors?.['pattern']" mensagem="O Campo CEP deve ter o seguinte formato 00000-000 é obrigatório!"></app-mensagem> -->
+      </div>
     </div>
 
     <div class="formulario__campo">
